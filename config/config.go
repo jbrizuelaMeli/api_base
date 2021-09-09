@@ -18,12 +18,18 @@ type Config struct {
 }
 
 func NewConfig() Config {
-	basePath, _ := os.Getwd()
+	basePath, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("get wd error: %v ", err)
+	}
+	if basePath == "/" {
+		basePath = ""
+	}
 	filePath := fmt.Sprintf(filePathFormat, basePath, "local")
 
 	configFile, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		log.Fatalf("yamlFile.Get err   #%v ", err)
+		log.Fatalf("read yaml file error: %v ", err)
 	}
 
 	configuration := Config{}
