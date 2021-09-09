@@ -1,0 +1,9 @@
+database:
+  driver: mysql
+  host: localhost
+  name: api_base
+  user: juan
+  password: password
+  max_idle_connections_per_host: 10
+  max_open_connections: 10
+  connection_max_life_time_seconds: 60
