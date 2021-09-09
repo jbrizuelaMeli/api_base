@@ -12,4 +12,8 @@
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+
+# Common IDE folders
+.idea
+.vscode
+.DS_Store
