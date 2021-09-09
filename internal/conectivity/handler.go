@@ -1,23 +1,37 @@
 package conectivity
 
-import "github.com/go-chi/chi"
+import (
+	"context"
+	"github.com/api_base/internal/domain/model"
+	"github.com/go-chi/chi"
+	"net/http"
+)
 
-type RouterHandler interface {
-	Handler() *chi.Mux
+type HandlerFunc interface {
+	Get(w http.ResponseWriter, r *http.Request)
 }
 
-type routerHandler struct {
-	handler HandlerFunc
+type Service interface {
+	Get(ctx context.Context, id string) (*model.Model, error)
 }
 
-func (rh routerHandler) Handler() *chi.Mux {
-	r := chi.NewRouter()
-	r.Get("/get/{id}", rh.handler.Get)
-	return r
+type handler struct {
+	service Service
 }
 
-func NewRouterHandler(handler HandlerFunc) RouterHandler {
-	return &routerHandler{
-		handler: handler,
+func NewHandlerFunc(srv Service) HandlerFunc {
+	return &handler{service: srv}
+}
+
+func (h handler) Get(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	id := chi.URLParam(r, "id")
+	if id == "" {
+		_, _ = w.Write([]byte("invalid_id"))
 	}
+	_, err := h.service.Get(ctx, id)
+	if err != nil {
+		_, _ = w.Write([]byte(err.Error()))
+	}
+	_, _ = w.Write([]byte("ok"))
 }
