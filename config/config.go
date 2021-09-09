@@ -22,9 +22,6 @@ func NewConfig() Config {
 	if err != nil {
 		log.Fatalf("get wd error: %v ", err)
 	}
-	if basePath == "/" {
-		basePath = ""
-	}
 	filePath := fmt.Sprintf(filePathFormat, basePath, "local")
 
 	configFile, err := ioutil.ReadFile(filePath)
