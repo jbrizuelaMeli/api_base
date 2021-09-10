@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"time"
 )
@@ -59,18 +58,16 @@ func (rc restClient) DoGet(ctx context.Context, url string, result interface{}, 
 	if err != nil {
 		return err
 	}
-
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
-	defer func() {
-		err := res.Body.Close()
-		if err != nil {
-			log.Fatalln(err.Error())
-		}
-	}()
-	if err := json.Unmarshal(body, result); err != nil {
+	err = res.Body.Close()
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(body, result)
+	if err != nil {
 		return err
 	}
 	return nil

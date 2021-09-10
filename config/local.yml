@@ -1,5 +1,5 @@
 rest_client:
-  timeout: 1500
+  timeout: 3000
   external_calls:
     token_api:
       domain: https://613afbc6110e000017a453fe.mockapi.io

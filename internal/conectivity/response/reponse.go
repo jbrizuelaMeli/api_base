@@ -1,4 +1,4 @@
-package web
+package response
 
 import (
 	"encoding/json"
@@ -6,6 +6,15 @@ import (
 	"io/ioutil"
 	"net/http"
 )
+
+func Write(w http.ResponseWriter, content interface{}, statusCode int) {
+	switch v := content.(type) {
+	case error:
+		_ = RespondJSON(w, NewError(statusCode, v.Error()), statusCode)
+	default:
+		_ = RespondJSON(w, v, statusCode)
+	}
+}
 
 // RespondJSON converts a Go value to JSON and sends it to the client.
 // If v is nil or code is equal to http.StatusNoContent we avoid writing any content to w.

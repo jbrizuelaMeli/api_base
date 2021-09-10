@@ -25,10 +25,10 @@ func (s service) Get(ctx context.Context, id string) (*model.User, error) {
 	if err != nil {
 		return nil, err
 	}
-	res, err := s.container.UserRepo.Get(ctx, token.UserId)
+	user, err := s.container.UserRepo.Get(ctx, token.UserId)
 	if err != nil {
 		return nil, err
 	}
-	res.Token = token
-	return res, nil
+	user.Token = token
+	return user, nil
 }
