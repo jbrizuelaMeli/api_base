@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"github.com/api_base/tool/database"
+	"github.com/api_base/tool/restclient"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
@@ -14,7 +15,8 @@ const (
 )
 
 type Config struct {
-	Database database.Config `yaml:"database"`
+	Database   database.Config   `yaml:"database"`
+	RestClient restclient.Config `yaml:"rest_client"`
 }
 
 func NewConfig() Config {

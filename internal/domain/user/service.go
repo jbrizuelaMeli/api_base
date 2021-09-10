@@ -1,4 +1,4 @@
-package service
+package user
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 )
 
 type Service interface {
-	Get(ctx context.Context, id string) (*model.Model, error)
+	Get(ctx context.Context, id string) (*model.User, error)
 }
 
 type service struct {
@@ -20,10 +20,15 @@ func NewService(container domain.Container) Service {
 	}
 }
 
-func (s service) Get(ctx context.Context, id string) (*model.Model, error) {
-	res, err := s.container.Repo.Get(ctx, id)
+func (s service) Get(ctx context.Context, id string) (*model.User, error) {
+	token, err := s.container.TokenRepo.Get(ctx, id)
 	if err != nil {
 		return nil, err
 	}
+	res, err := s.container.UserRepo.Get(ctx, token.UserId)
+	if err != nil {
+		return nil, err
+	}
+	res.Token = token
 	return res, nil
 }

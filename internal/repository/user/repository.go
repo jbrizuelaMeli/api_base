@@ -1,4 +1,4 @@
-package repository
+package user
 
 import (
 	"context"
@@ -16,8 +16,8 @@ func NewRepository(db database.Database) *Repository {
 	}
 }
 
-func (r *Repository) Get(ctx context.Context, id string) (*model.Model, error) {
-	modelDb := &model.Model{
+func (r *Repository) Get(ctx context.Context, id string) (*model.User, error) {
+	modelDb := &model.User{
 		Id: id,
 	}
 	return modelDb, nil

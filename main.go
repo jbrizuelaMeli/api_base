@@ -4,7 +4,7 @@ import (
 	"github.com/api_base/config"
 	"github.com/api_base/internal/conectivity"
 	"github.com/api_base/internal/domain"
-	"github.com/api_base/internal/domain/service"
+	"github.com/api_base/internal/domain/user"
 	"log"
 	"net/http"
 )
@@ -14,7 +14,7 @@ func main() {
 	conf := config.NewConfig()
 	//Dependencies
 	ctn := domain.NewContainer(conf)
-	srv := service.NewService(ctn)
+	srv := user.NewService(ctn)
 	hdlFunc := conectivity.NewHandlerFunc(srv)
 	//Router
 	router := conectivity.NewRouterHandler(hdlFunc)

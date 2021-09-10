@@ -4,17 +4,24 @@ import (
 	"context"
 	"github.com/api_base/config"
 	"github.com/api_base/internal/domain/model"
-	"github.com/api_base/internal/repository"
+	"github.com/api_base/internal/repository/token"
+	"github.com/api_base/internal/repository/user"
 	"github.com/api_base/tool/database"
+	"github.com/api_base/tool/restclient"
 	"log"
 )
 
 type Container struct {
-	Repo Repository
+	UserRepo  UserRepository
+	TokenRepo TokenRepository
 }
 
-type Repository interface {
-	Get(ctx context.Context, id string) (*model.Model, error)
+type UserRepository interface {
+	Get(ctx context.Context, id string) (*model.User, error)
+}
+
+type TokenRepository interface {
+	Get(ctx context.Context, id string) (model.Token, error)
 }
 
 func NewContainer(config config.Config) Container {
@@ -22,7 +29,12 @@ func NewContainer(config config.Config) Container {
 	if err != nil {
 		log.Fatal("initialize database fail: ", err)
 	}
+	rc, err := restclient.NewRestClient(config.RestClient)
+	if err != nil {
+		log.Fatal("initialize rest_client fail: ", err)
+	}
 	return Container{
-		Repo: repository.NewRepository(db),
+		UserRepo:  user.NewRepository(db),
+		TokenRepo: token.NewRepository(rc),
 	}
 }

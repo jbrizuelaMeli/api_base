@@ -1,3 +1,11 @@
+rest_client:
+  timeout: 1500
+  external_calls:
+    token_api:
+      domain: https://613afbc6110e000017a453fe.mockapi.io
+      resources:
+        get_token:
+          request_uri: /token/get/%s
 database:
   driver: mysql
   host: localhost
